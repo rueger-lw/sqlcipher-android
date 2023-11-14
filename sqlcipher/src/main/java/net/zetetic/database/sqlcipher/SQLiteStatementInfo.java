@@ -37,6 +37,15 @@ public final class SQLiteStatementInfo {
     public String[] columnNames;
 
     /**
+     * The (synthetic, non-aliased) table names of all columns in the result set of the statement.
+     */
+    public String[] columnTableNames;
+    /**
+     * The types of all columns in the result set of the statement.
+     * Really only needed if the result set is empty.
+     */
+    public String[] columnTypes;
+    /**
      * True if the statement is read-only.
      */
     public boolean readOnly;

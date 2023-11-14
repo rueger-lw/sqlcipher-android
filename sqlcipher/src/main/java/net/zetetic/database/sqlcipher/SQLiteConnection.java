@@ -135,6 +135,11 @@ public final class SQLiteConnection implements CancellationSignal.OnCancelListen
     private static native int nativeGetColumnCount(long connectionPtr, long statementPtr);
     private static native String nativeGetColumnName(long connectionPtr, long statementPtr,
             int index);
+    private static native String nativeGetColumnTableName(long connectionPtr, long statementPtr,
+                                                     int index);
+    private static native String nativeGetColumnType(long connectionPtr, long statementPtr,
+                                                          int index);
+
     private static native void nativeBindNull(long connectionPtr, long statementPtr,
             int index);
     private static native void nativeBindLong(long connectionPtr, long statementPtr,
@@ -544,10 +549,18 @@ public final class SQLiteConnection implements CancellationSignal.OnCancelListen
                             mConnectionPtr, statement.mStatementPtr);
                     if (columnCount == 0) {
                         outStatementInfo.columnNames = EMPTY_STRING_ARRAY;
+                        outStatementInfo.columnTableNames = EMPTY_STRING_ARRAY;
+                        outStatementInfo.columnTypes = EMPTY_STRING_ARRAY;
                     } else {
                         outStatementInfo.columnNames = new String[columnCount];
+                        outStatementInfo.columnTableNames = new String[columnCount];
+                        outStatementInfo.columnTypes = new String[columnCount];
                         for (int i = 0; i < columnCount; i++) {
                             outStatementInfo.columnNames[i] = nativeGetColumnName(
+                                    mConnectionPtr, statement.mStatementPtr, i);
+                            outStatementInfo.columnTableNames[i] = nativeGetColumnTableName(
+                                    mConnectionPtr, statement.mStatementPtr, i);
+                            outStatementInfo.columnTypes[i] = nativeGetColumnType(
                                     mConnectionPtr, statement.mStatementPtr, i);
                         }
                     }

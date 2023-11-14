@@ -1,6 +1,6 @@
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
-
+LOCAL_CFLAGS += -D__GLIBC__
 ifdef $SSQLCIPHER_CFLAGS
 LOCAL_CFLAGS += ${SQLCIPHER_CFLAGS}
 else

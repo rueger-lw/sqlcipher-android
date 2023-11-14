@@ -40,6 +40,8 @@ public abstract class SQLiteProgram extends SQLiteClosable implements SupportSQL
     private final String mSql;
     private final boolean mReadOnly;
     private final String[] mColumnNames;
+    private final String[] mColumnTableNames;
+    private final String[] mColumnTypes;
     private final int mNumParameters;
     private final Object[] mBindArgs;
 
@@ -55,6 +57,8 @@ public abstract class SQLiteProgram extends SQLiteClosable implements SupportSQL
             case DatabaseUtils.STATEMENT_ABORT:
                 mReadOnly = false;
                 mColumnNames = EMPTY_STRING_ARRAY;
+                mColumnTableNames = EMPTY_STRING_ARRAY;
+                mColumnTypes = EMPTY_STRING_ARRAY;
                 mNumParameters = 0;
                 break;
 
@@ -66,6 +70,8 @@ public abstract class SQLiteProgram extends SQLiteClosable implements SupportSQL
                         cancellationSignalForPrepare, info);
                 mReadOnly = info.readOnly;
                 mColumnNames = info.columnNames;
+                mColumnTableNames = info.columnTableNames;
+                mColumnTypes = info.columnTypes;
                 mNumParameters = info.numParameters;
                 break;
         }
@@ -100,6 +106,14 @@ public abstract class SQLiteProgram extends SQLiteClosable implements SupportSQL
 
     final String[] getColumnNames() {
         return mColumnNames;
+    }
+
+    final String[] getColumTableNames() {
+        return mColumnTableNames;
+    }
+
+    final String[] getColumnTypes() {
+        return mColumnTypes;
     }
 
     /** @hide */

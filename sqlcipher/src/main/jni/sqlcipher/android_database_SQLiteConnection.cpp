@@ -421,6 +421,36 @@ static jstring nativeGetColumnName(JNIEnv* env, jclass clazz, jlong connectionPt
     return NULL;
 }
 
+static jstring nativeGetColumnTableName(JNIEnv* env, jclass clazz, jlong connectionPtr,
+                                   jlong statementPtr, jint index) {
+    sqlite3_stmt* statement = reinterpret_cast<sqlite3_stmt*>(statementPtr);
+
+    const jchar* name = static_cast<const jchar*>(sqlite3_column_table_name16(statement, index));
+    if (name) {
+        size_t length = 0;
+        while (name[length]) {
+            length += 1;
+        }
+        return env->NewString(name, length);
+    }
+    return NULL;
+}
+
+static jstring nativeGetColumnType(JNIEnv* env, jclass clazz, jlong connectionPtr,
+                                        jlong statementPtr, jint index) {
+    sqlite3_stmt* statement = reinterpret_cast<sqlite3_stmt*>(statementPtr);
+
+	const jchar* name = static_cast<const jchar*>(sqlite3_column_decltype16(statement, index));
+	if (name) {
+		size_t length = 0;
+		while (name[length]) {
+			length += 1;
+		}
+		return env->NewString(name, length);
+	}
+	return NULL;
+}
+
 static void nativeBindNull(JNIEnv* env, jclass clazz, jlong connectionPtr,
         jlong statementPtr, jint index) {
     SQLiteConnection* connection = reinterpret_cast<SQLiteConnection*>(connectionPtr);
@@ -909,6 +939,10 @@ static JNINativeMethod sMethods[] =
             (void*)nativeGetColumnCount },
     { "nativeGetColumnName", "(JJI)Ljava/lang/String;",
             (void*)nativeGetColumnName },
+    { "nativeGetColumnTableName", "(JJI)Ljava/lang/String;",
+            (void*)nativeGetColumnTableName },
+    { "nativeGetColumnType", "(JJI)Ljava/lang/String;",
+            (void*)nativeGetColumnType },
     { "nativeBindNull", "(JJI)V",
             (void*)nativeBindNull },
     { "nativeBindLong", "(JJIJ)V",

@@ -26,6 +26,7 @@ import android.database.CursorWindow;
 import net.zetetic.database.DatabaseUtils;
 
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -108,6 +109,10 @@ public class SQLiteCursor extends AbstractWindowedCursor {
         mQuery = query;
 
         mColumns = query.getColumnNames();
+        Bundle extras = new Bundle();
+        extras.putStringArray("tableNames", query.getColumTableNames());
+        extras.putStringArray("columnTypes", query.getColumnTypes());
+        setExtras(extras);
     }
 
     /**
